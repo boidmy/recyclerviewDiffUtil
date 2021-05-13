@@ -25,7 +25,7 @@ class RadioAdapter(private val callback: Call) : RecyclerView.Adapter<RadioViewH
     }
 
     override fun onBindViewHolder(holder: RadioViewHolder, position: Int) {
-        holder.bindView(diffUtil.currentList[position], callback)
+        holder.bindView((diffUtil.currentList[position] as RadioDataModel), callback)
     }
 
     fun setData(item: List<RadioDataModel>) {
@@ -50,14 +50,17 @@ class RadioViewHolder(parent: ViewGroup) : RecyclerView.ViewHolder(
     }
 }
 
-object DiffUtilCallBack : DiffUtil.ItemCallback<RadioDataModel>() {
-    override fun areItemsTheSame(oldItem: RadioDataModel, newItem: RadioDataModel): Boolean {
+object DiffUtilCallBack : DiffUtil.ItemCallback<DiffUtilCallbackSelectorInterface>() {
+    override fun areItemsTheSame(
+        oldItem: DiffUtilCallbackSelectorInterface,
+        newItem: DiffUtilCallbackSelectorInterface
+    ): Boolean {
         return oldItem.keyValue() == newItem.keyValue()
     }
 
     override fun areContentsTheSame(
-        oldItem: RadioDataModel,
-        newItem: RadioDataModel
+        oldItem: DiffUtilCallbackSelectorInterface,
+        newItem: DiffUtilCallbackSelectorInterface
     ): Boolean {
         return oldItem.contentValue() == newItem.contentValue()
     }
